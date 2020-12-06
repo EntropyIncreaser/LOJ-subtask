@@ -108,6 +108,7 @@ int main() {
     else if (tok == "output_suf") str >> osuf;
     else if (tok == "n_subtasks") str >> n;
   }
+  last[0] = 0;
   cout << "subtasks:\n";
   for (int i = 1; i <= n; ++i) {
     cout << "  - scoringType: GroupMin\n"
