@@ -89,6 +89,7 @@ int main() {
   cin.tie(nullptr);
 
   map<int, int> score, last;
+  map<int, set<int>> dependencies;
   string line, ipre, isuf, opre, osuf;
   int n = 0;
   while (getline(cin, line)) {
@@ -99,6 +100,12 @@ int main() {
     if (tok.find("score") != -1) {
       int id = atoi(tok.substr(14).c_str());
       str >> score[id];
+    } else if (tok.find("dependence") != -1) {
+      int id = atoi(tok.substr(19).c_str());
+      str >> tok;
+      if (isdigit(tok[0])) {
+        dependencies[id].emplace(atoi(tok.c_str()));
+      }
     } else if (tok.find("end") != -1) {
       int id = atoi(tok.substr(12).c_str());
       str >> last[id];
@@ -112,7 +119,14 @@ int main() {
   cout << "subtasks:\n";
   for (int i = 1; i <= n; ++i) {
     cout << "  - scoringType: GroupMin\n"
-            "    points: " << score[i] << "\n    testcases:\n";
+            "    points: " << score[i] << '\n';
+    if (!dependencies[i].empty()) {
+      cout << "    dependencies:\n";
+      for (int j : dependencies[i]) {
+        cout << "      - " << j - 1 << '\n';
+      }
+    }
+    cout << "    testcases:\n";
     for (int j = last[i - 1] + 1; j <= last[i]; ++j) {
       cout << "      - inputFile: " << ipre << j << '.' << isuf << '\n' <<
               "        outputFile: " << opre << j << '.' << osuf << '\n';
